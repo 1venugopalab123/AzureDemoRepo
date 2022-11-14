@@ -1,0 +1,17 @@
+{
+	"name": "PL_DEV1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait1_fordev1",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"annotations": []
+	}
+}
