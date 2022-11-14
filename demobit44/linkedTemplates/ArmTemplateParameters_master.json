@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "demobit44"
+		},
+		"LS_demobit_sql_connectionString": {
+			"value": ""
+		},
+		"LS_demobit_storage_ADLS_accountKey": {
+			"value": ""
+		},
+		"LS_domobit_storage_connectionString": {
+			"value": ""
+		},
+		"LS_demobit_storage_ADLS_properties_typeProperties_url": {
+			"value": "https://demobit44adls.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
