@@ -57,10 +57,6 @@
 							"Dataset_directory": {
 								"value": "@pipeline().parameters.dest_Tableschema",
 								"type": "Expression"
-							},
-							"Dataset_Fileschema": {
-								"value": "@pipeline().parameters.source_directory",
-								"type": "Expression"
 							}
 						}
 					}
