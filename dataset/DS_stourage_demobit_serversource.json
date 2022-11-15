@@ -12,6 +12,9 @@
 			"Dataset_FileName": {
 				"type": "string"
 			},
+			"Dataset_directory": {
+				"type": "string"
+			},
 			"Dataset_Fileschema": {
 				"type": "string"
 			}

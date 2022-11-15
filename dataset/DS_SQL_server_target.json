@@ -11,6 +11,9 @@
 			},
 			"dataset_Tableschema": {
 				"type": "string"
+			},
+			"Dataset_Tabledirectory": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
