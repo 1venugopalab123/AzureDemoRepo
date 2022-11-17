@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "demobit44"
 		},
+		"LS_SQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_SQLServer'"
+		},
 		"LS_demobit_sql_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_demobit_sql'"
@@ -49,6 +53,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQLServer_connectionString": {
+						"value": "[parameters('LS_SQLServer_connectionString')]"
 					},
 					"LS_demobit_sql_connectionString": {
 						"value": "[parameters('LS_demobit_sql_connectionString')]"

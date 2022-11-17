@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "demobit44"
 		},
+		"LS_SQLServer_connectionString": {
+			"value": ""
+		},
 		"LS_demobit_sql_connectionString": {
 			"value": ""
 		},

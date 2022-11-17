@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "demobit44"
 		},
+		"LS_SQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_SQLServer'"
+		},
 		"LS_demobit_sql_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_demobit_sql'"
@@ -29,50 +33,20 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_DEV1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/LS_SQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "Wait1_fordev1",
-						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
+				"parameters": {
+					"LS_DatabaseName": {
+						"type": "string"
 					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
 				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Wait1",
-						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_SQLServer_connectionString')]"
+				}
 			},
 			"dependsOn": []
 		},
@@ -107,6 +81,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/intpublic')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"description": "used to do copy activity in cloud",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_domobit_storage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -115,12 +110,18 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('LS_domobit_storage_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "intpublic",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/intpublic')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_storage_demobit_source')]",
+			"name": "[concat(parameters('factoryName'), '/DS_CSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -133,7 +134,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "kavi22.csv",
+						"fileName": "PURCHASEORDER2.csv",
 						"container": "input"
 					},
 					"columnDelimiter": ",",
@@ -143,19 +144,23 @@
 				},
 				"schema": [
 					{
-						"name": "OrderID",
+						"name": "purchaseorderID",
 						"type": "String"
 					},
 					{
-						"name": "ProductID",
+						"name": "customercode",
 						"type": "String"
 					},
 					{
-						"name": "CustomerID",
+						"name": "productcode",
 						"type": "String"
 					},
 					{
-						"name": "UnitPrice",
+						"name": "employeecode",
+						"type": "String"
+					},
+					{
+						"name": "purchaseorderDate",
 						"type": "String"
 					},
 					{
@@ -163,7 +168,7 @@
 						"type": "String"
 					},
 					{
-						"name": "InsertDateTime",
+						"name": "unitprice",
 						"type": "String"
 					}
 				]
@@ -173,7 +178,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_storage_demobit_target')]",
+			"name": "[concat(parameters('factoryName'), '/DS_output')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -200,13 +205,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_copy_blobe_storage')]",
+			"name": "[concat(parameters('factoryName'), '/PL_CPY_output')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy _storage_demobit",
+						"name": "Copy data1",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -243,80 +248,6 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "OrderID",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "OrderID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductID",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "ProductID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CustomerID",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "CustomerID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "UnitPrice",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "UnitPrice",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Quantity",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Quantity",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "InsertDateTime",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "InsertDateTime",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -326,14 +257,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_storage_demobit_source",
+								"referenceName": "DS_CSV",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_storage_demobit_target",
+								"referenceName": "DS_output",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -344,12 +275,11 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": [],
-				"lastPublishTime": "2022-11-14T07:46:11Z"
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_storage_demobit_source')]",
-				"[concat(variables('factoryId'), '/datasets/DS_storage_demobit_target')]"
+				"[concat(variables('factoryId'), '/datasets/DS_CSV')]",
+				"[concat(variables('factoryId'), '/datasets/DS_output')]"
 			]
 		}
 	]
