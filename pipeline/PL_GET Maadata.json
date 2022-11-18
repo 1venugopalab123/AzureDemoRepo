@@ -46,7 +46,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(\n    formatDateTime(activity('Get Metadata1').output.lastModified,'yyy_mm_dd'),\nformatDateTime(utcnow(),'yyy_mm_dd')\n)",
+						"value": "@equals(\nformatDateTime(activity('Get Metadata1').output.lastModified,'yyy-mm-dd'),\nformatDateTime(utcnow(),'yyy-mm-dd')\n)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -77,15 +77,7 @@
 								"sink": {
 									"type": "DelimitedTextSink",
 									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings",
-										"metadata": [
-											{
-												"value": ""
-											},
-											{
-												"value": ""
-											}
-										]
+										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
@@ -105,7 +97,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DS_CSV",
+									"referenceName": "DS_blobefile_matadata",
 									"type": "DatasetReference"
 								}
 							],
