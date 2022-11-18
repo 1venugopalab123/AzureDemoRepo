@@ -111,7 +111,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_GET Maadata')]",
+			"name": "[concat(parameters('factoryName'), '/PL_blobe_matadata')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -121,7 +121,7 @@
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
-							"timeout": "0.1:00:00",
+							"timeout": "0.12:00:00",
 							"retry": 0,
 							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
@@ -130,7 +130,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "DS_blobefile_matadata",
+								"referenceName": "DS_blobe_matadata",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -161,7 +161,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@equals(\n    formatDateTime(activity('Get Metadata1').output.lastModified,'yyy_mm_dd'),\nformatDateTime(utcnow(),'yyy_mm_dd')\n)",
+								"value": "@equals(\n    formatDateTime(activity('Get Metadata1').output.lastModified,'yyy-mm-dd'),\nformatDateTime(utcnow(),'yyy-mm-dd')\n)",
 								"type": "Expression"
 							},
 							"ifTrueActivities": [
@@ -197,7 +197,7 @@
 											"formatSettings": {
 												"type": "DelimitedTextWriteSettings",
 												"quoteAllText": true,
-												"fileExtension": ".txt"
+												"fileExtension": ".csv"
 											}
 										},
 										"enableStaging": false,
@@ -212,7 +212,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "DS_CSV",
+											"referenceName": "DS_blobe_matadata",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -236,8 +236,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_blobefile_matadata')]",
-				"[concat(variables('factoryId'), '/datasets/DS_CSV')]",
+				"[concat(variables('factoryId'), '/datasets/DS_blobe_matadata')]",
 				"[concat(variables('factoryId'), '/datasets/DS_output')]"
 			]
 		},
@@ -299,7 +298,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_blobefile_matadata')]",
+			"name": "[concat(parameters('factoryName'), '/DS_blobe_matadata')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
