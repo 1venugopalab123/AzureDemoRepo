@@ -1,0 +1,52 @@
+{
+	"name": "DS_blobefile_matadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_domobit_storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "PURCHASEORDER2.csv",
+				"container": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "purchaseorderID",
+				"type": "String"
+			},
+			{
+				"name": "customercode",
+				"type": "String"
+			},
+			{
+				"name": "productcode",
+				"type": "String"
+			},
+			{
+				"name": "employeecode",
+				"type": "String"
+			},
+			{
+				"name": "purchaseorderDate",
+				"type": "String"
+			},
+			{
+				"name": "Quantity",
+				"type": "String"
+			},
+			{
+				"name": "unitprice",
+				"type": "String"
+			}
+		]
+	}
+}
