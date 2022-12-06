@@ -5,20 +5,8 @@
 		"factoryName": {
 			"value": "demobit44"
 		},
-		"LS_SQLServer_connectionString": {
-			"value": ""
-		},
-		"LS_demobit_sql_connectionString": {
-			"value": ""
-		},
-		"LS_demobit_storage_ADLS_accountKey": {
-			"value": ""
-		},
 		"LS_domobit_storage_connectionString": {
 			"value": ""
-		},
-		"LS_demobit_storage_ADLS_properties_typeProperties_url": {
-			"value": "https://demobit44adls.dfs.core.windows.net/"
 		}
 	}
 }
