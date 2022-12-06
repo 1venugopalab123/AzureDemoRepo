@@ -315,7 +315,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "input"
+						"container": "output"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -351,6 +351,13 @@
 					"connectionString": "[parameters('LS_domobit_storage_connectionString')]"
 				}
 			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {},
 			"dependsOn": []
 		}
 	]
